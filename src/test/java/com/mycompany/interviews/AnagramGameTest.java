@@ -1,14 +1,12 @@
 package com.mycompany.interviews;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 /**
  * This class is a JUnit class which you can run to check if AnagramGame is working correctly.
@@ -22,18 +20,18 @@ class AnagramGameTest {
 
 	@BeforeEach
     public void setUp() {
-        //dictionary = new WordDictionary();
-        dictionary = mock(WordDictionary.class);
+        dictionary = new WordDictionary();
         game = new AnagramGame("areallylongword", dictionary);
     }
 
 	@Test
-    public void afterDictionaryIsLoaded_wordsAreEvaluatedCorrectly() {
-        verify(dictionary, timeout(4500)).load(this::checkIfWordsAreEvaluatedCorrectly);
-        dictionary.load(this::checkIfWordsAreEvaluatedCorrectly);
-    }
+    public void afterDictionaryIsLoaded_wordsAreEvaluatedCorrectly() throws InterruptedException {
+        dictionary.load(list -> { });
 
-    private void checkIfWordsAreEvaluatedCorrectly(List wordList) {
+        // wait a little until the dictionary is loaded
+        CountDownLatch lock = new CountDownLatch(1);
+        lock.await(2, TimeUnit.SECONDS);
+
         assertEquals(2, game.evaluateWord("no"));
         assertEquals(4, game.evaluateWord("grow"));
         assertEquals(0, game.evaluateWord("bold"));
@@ -41,21 +39,23 @@ class AnagramGameTest {
         assertEquals(6, game.evaluateWord("woolly"));
         assertEquals(0, game.evaluateWord("adder"));
     }
-/*
-	@Test(timeout=2000)
-    public void wordsSubmittedBeforeDictionaryIsLoaded_areNotDiscarded() {
+
+
+	@Test
+    public void wordsSubmittedBeforeDictionaryIsLoaded_areNotDiscarded() throws InterruptedException {
         game.submitWord("no");
         game.submitWord("grow");
         game.submitWord("bold");
         game.submitWord("glly");
         game.submitWord("woolly");
         game.submitWord("adder");
-        Async.handleEvent(this, dictionary, "loaded", checkIfWordsWereSubmittedCorrectly, 15000);
-        dictionary.load();
 
-    }
+        dictionary.load(list -> {});
 
-    private void checkIfWordsWereSubmittedCorrectly(event : Event, passThroughObject : Object) {
+        // wait a little until the dictionary is loaded
+        CountDownLatch lock = new CountDownLatch(1);
+        lock.await(2, TimeUnit.SECONDS);
+
         assertHighscoreEntry(0, "woolly", 6);
         assertHighscoreEntry(1, "grow", 4);
         assertHighscoreEntry(2, "no", 2);
@@ -65,5 +65,5 @@ class AnagramGameTest {
         assertEquals(expectedWord, game.getWordAtPosition(index));
         assertEquals(expectedScore, game.getScoreAtPosition(index));
     }
-*/
+
 }
