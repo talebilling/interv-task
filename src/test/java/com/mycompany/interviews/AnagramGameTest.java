@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class is a JUnit class which you can run to check if AnagramGame is working correctly.
@@ -43,12 +43,6 @@ class AnagramGameTest {
 
 	@Test
     public void wordsSubmittedBeforeDictionaryIsLoaded_areNotDiscarded() throws InterruptedException {
-        game.submitWord("no");
-        game.submitWord("grow");
-        game.submitWord("bold");
-        game.submitWord("glly");
-        game.submitWord("woolly");
-        game.submitWord("adder");
 
         dictionary.load(list -> {});
 
@@ -56,10 +50,22 @@ class AnagramGameTest {
         CountDownLatch lock = new CountDownLatch(1);
         lock.await(2, TimeUnit.SECONDS);
 
+        game.submitWord("no");
+        game.submitWord("grow");
+        game.submitWord("bold");
+        game.submitWord("glly");
+        game.submitWord("woolly");
+        game.submitWord("adder");
+        game.submitWord("wor");
+
+
+
+
         assertHighscoreEntry(0, "woolly", 6);
         assertHighscoreEntry(1, "grow", 4);
         assertHighscoreEntry(2, "no", 2);
     }
+
 
     private void assertHighscoreEntry (int index, String expectedWord, int expectedScore) {
         assertEquals(expectedWord, game.getWordAtPosition(index));

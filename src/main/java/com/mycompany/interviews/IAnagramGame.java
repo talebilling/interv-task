@@ -1,12 +1,14 @@
 package com.mycompany.interviews;
 
+import java.util.List;
+
 /**
  * Service to provide an anagram game.
  * <p/>
  * The game is constructed with a base set of letters, e.g. the string "areallylongword",
  * which may be assumed to be all in lowercase, and with no whitespace or special characters. The user then attempts
- * to create words out of the letters from the base set, and score one point for each letter used. The submissions
- * must be "real words": use the WordDictionary to check each submission.
+ * to create rankList out of the letters from the base set, and score one point for each letter used. The submissions
+ * must be "real rankList": use the WordDictionary to check each submission.
  * <p/>
  * For example (assuming "areallylongword" as base set of letters):
  * <ul>
@@ -49,7 +51,7 @@ public interface IAnagramGame {
      *
      * <b>This method is guaranteed to never be called until the dictionary has finished loading</b>.
      *
-     * @param word Word to check. All words may be assumed to be lowercase and containing no whitespace or special
+     * @param word Word to check. All rankList may be assumed to be lowercase and containing no whitespace or special
      *             characters.
      * @return the score, 0 if the word is not accepted
      */
@@ -72,4 +74,6 @@ public interface IAnagramGame {
      * @return word entry at given position in the high score list, or null if there is no entry at that position
      */
     String getWordAtPosition(int position);
+
+    public List<String> getRankList();
 }

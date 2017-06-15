@@ -19,7 +19,7 @@ public interface IWordDictionary {
 
     /**
      *
-     * @return number of words in the dictionary
+     * @return number of rankList in the dictionary
      */
     int size();
 }
