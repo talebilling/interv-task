@@ -44,20 +44,28 @@ public class AnagramGame implements IAnagramGame
         int score = evaluateWord(word);
         if (rankList.isEmpty() && 0 < score) {
             rankList.add(word);
+            System.out.println(getRankList().toString());
         }
         else if (0 < score) {
             for (int i = 0; i < rankList.size(); i++) {
                 String act = rankList.get(i);
                 if (act.length() < word.length()) {
                     rankList.add(i, word);
+                    System.out.println(getRankList().toString());
+                    removeScoreIfNotInFirstTen();
                     return;
                 }
             }
         }
+    }
 
-	}
+    private void removeScoreIfNotInFirstTen() {
+        if (rankList.size() > 10) {
+            rankList.remove(10);
+        }
+    }
 
-	/**
+    /**
 	 * @inheritDoc
 	 * @param word
 	 * @return
@@ -68,8 +76,7 @@ public class AnagramGame implements IAnagramGame
 		int result = 0;
         Map<String, Integer> givenWordMap = new HashMap<>();
         createMapFromWord(word, givenWordMap);
-        boolean contains = dictionary.contains(word);
-        if (contains) {
+        if (dictionary.contains(word)) {
             for (String keyChar : givenWordMap.keySet()) {
                 if (!baseWordCharMap.containsKey(keyChar) || givenWordMap.get(keyChar) > baseWordCharMap.get(keyChar)) {
                     result = 0;
@@ -80,7 +87,7 @@ public class AnagramGame implements IAnagramGame
                 }
             }
         }
-		System.out.println(result);
+//		System.out.println(result);
 		return result;
 	}
 

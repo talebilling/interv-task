@@ -1,7 +1,5 @@
 package com.mycompany.interviews;
 
-import java.util.List;
-
 /**
  * Service to provide an anagram game.
  * <p/>
@@ -74,6 +72,4 @@ public interface IAnagramGame {
      * @return word entry at given position in the high score list, or null if there is no entry at that position
      */
     String getWordAtPosition(int position);
-
-    public List<String> getRankList();
 }

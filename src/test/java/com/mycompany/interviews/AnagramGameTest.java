@@ -43,13 +43,6 @@ class AnagramGameTest {
 
 	@Test
     public void wordsSubmittedBeforeDictionaryIsLoaded_areNotDiscarded() throws InterruptedException {
-
-        dictionary.load(list -> {});
-
-        // wait a little until the dictionary is loaded
-        CountDownLatch lock = new CountDownLatch(1);
-        lock.await(2, TimeUnit.SECONDS);
-
         game.submitWord("no");
         game.submitWord("grow");
         game.submitWord("bold");
@@ -59,6 +52,11 @@ class AnagramGameTest {
         game.submitWord("wor");
 
 
+        dictionary.load(list -> {});
+
+        // wait a little until the dictionary is loaded
+        CountDownLatch lock = new CountDownLatch(1);
+        lock.await(2, TimeUnit.SECONDS);
 
 
         assertHighscoreEntry(0, "woolly", 6);
